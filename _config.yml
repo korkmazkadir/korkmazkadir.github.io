@@ -1,4 +1,4 @@
 theme: jekyll-theme-minimal
 title: Kadir Korkmaz
-logo: /assets/img/logo.jpg
+logo: {{ site.url }}/assets/img/logo.jpg
 description: Personal page of mine..
