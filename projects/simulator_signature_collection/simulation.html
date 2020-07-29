@@ -1,0 +1,149 @@
+<html>
+
+<head>
+
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+        <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+    <!-- Angular JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.0/angular.min.js"
+        integrity="sha512-jiG+LwJB0bmXdn4byKzWH6whPpnLy1pnGA/p3VCXFLk4IJ/Ftfcb22katPTapt35Q6kwrlnRheK6UPOIdJhYTA=="
+        crossorigin="anonymous"></script>
+
+
+    <!-- math JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.1.0/math.js"
+        integrity="sha512-fV7AgA3aFCdEFQgTcyJrUr5ZAMlRvCOxVIuLyX8Ru20HYFy9B9bOi74i6IsymKw0i9XM9V51aDEbFXqBPG/cKQ=="
+        crossorigin="anonymous"></script>
+
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <title> Statistics and simulations of the Simple Consensus Algorithm</title>
+</head>
+
+
+<body id="page_body" ng-app="simulationApp" ng-controller="mainController">
+
+    <div class="container">
+        <div class="row" style="height: 80px;"></div>
+
+        <div class="row">
+
+            <div class="col-sm text-center">
+                <h4>#Nodes</h4>
+            </div>
+
+            <div class="col-sm text-center">
+                <h4>#Byzantine Faulty Nodes</h4>
+            </div>
+
+            <div class="col-sm text-center">
+                <h4>#Signatures to Collect</h4>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ nodeCount }}
+            </div>
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ faultyNodeCount }}
+            </div>
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ signatureCount  }}
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div class="col-sm text-center">
+                Number of CPU cores: {{ cpuCoreCount }}
+            </div>
+
+            <div class="col-sm text-center">
+                Iteration count : {{ expo(iterationCount) }}
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm" style="margin: 20px;" ng-show="showProgressBar" >
+                <div class="progress">
+                    <div id='progressBar' class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div class="col-sm text-center">
+                Measured number of successful leaders
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div id="chart_div_1" class="col-sm">
+                
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div class="col-sm text-center">
+                Number of times a Byzantine leaders wins: {{byzantinesWinCount}}
+            </div>
+
+            <div class="col-sm text-center">
+                Number of times system stops: {{systemStopCount}}
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</body>
+
+
+<script>
+    google.charts.load('current', { packages: ['corechart', 'line'] });
+    google.setOnLoadCallback(function () {
+        //angular.element(document.getElementById('page_body')).scope().drawChartOne();
+        //angular.element(document.getElementById('page_body')).scope().drawChartTwo();
+    });
+</script>
+
+<script src="./simulation.js"></script>
+
+</html>

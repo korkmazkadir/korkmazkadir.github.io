@@ -1,0 +1,166 @@
+<html>
+
+<head>
+
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+    <!-- Angular JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.0/angular.min.js"
+        integrity="sha512-jiG+LwJB0bmXdn4byKzWH6whPpnLy1pnGA/p3VCXFLk4IJ/Ftfcb22katPTapt35Q6kwrlnRheK6UPOIdJhYTA=="
+        crossorigin="anonymous"></script>
+
+
+    <!-- math JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.1.0/math.js"
+        integrity="sha512-fV7AgA3aFCdEFQgTcyJrUr5ZAMlRvCOxVIuLyX8Ru20HYFy9B9bOi74i6IsymKw0i9XM9V51aDEbFXqBPG/cKQ=="
+        crossorigin="anonymous"></script>
+
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <title> Statistics and simulations of the Simple Consensus Algorithm</title>
+</head>
+
+
+<body id="page_body" ng-app="statsCalculater" ng-controller="mainController" >
+
+    <div class="container">
+        <div class="row" style="height: 80px;"></div>
+
+        <div class="row">
+
+            <div class="col-sm text-center">
+                <h4>#Byzantine Faulty Nodes</h4>
+            </div>
+
+            <div class="col-sm text-center">
+                <h4>#Nodes</h4>
+            </div>
+
+            <div class="col-sm text-center">
+                <h4>#Signatures to Collect</h4>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+
+            <div class="col-sm text-center">
+                f = {{ faultyNodeCount }}
+            </div>
+
+            <div class="col-sm text-center">
+                n = {{ nodeCountCoefficient }}*f
+            </div>
+
+            <div class="col-sm text-center">
+                {{ signatureCountCoefficient }}*log n
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm text-center">
+                <input ng-model="faultyNodeCount" ng-change="inputUpdated()" type="range" min="0" max="1000" value="0" step="10" class="slider"
+                    id="myRange">
+            </div>
+
+            <div class="col-sm text-center">
+                <input ng-model="nodeCountCoefficient" ng-change="inputUpdated()" type="range" min="3" max="10" value="5" step="0.2" class="slider"
+                    id="myRange">
+            </div>
+
+            <div class="col-sm text-center">
+                <input ng-model="signatureCountCoefficient" ng-change="inputUpdated()" type="range" min="1" max="40" value="1" step="0.2" class="slider"
+                    id="myRange">
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ faultyNodeCount }}
+            </div>
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ nodeCountCoefficient * faultyNodeCount }}
+            </div>
+
+            <div class="col-sm text-center" style="font-size: 1.5em">
+                {{ Math.ceil( signatureCountCoefficient * Math.log10(nodeCountCoefficient * faultyNodeCount) )  }}
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div class="col-sm">
+
+                The probability of an honest leader wins: {{ anHonestLeaderWins() }} <br>
+
+                The expected number of correct leaders: <br>
+                <!-- 
+                <textarea rows="10" cols="40">{{showExpextedNumberOfCorrerctLeaders()}}</textarea>
+                <br>
+                -->
+
+                <div class="row" style="margin: 20px;">
+
+                    <div class="col-sm" id="chart_container">
+        
+                    </div>
+        
+                </div>
+
+                The probability of a byzantine leader wins: {{ aByzantineLeaderWins() }} <br>
+
+                The mean probability of Byzantines win: {{ meanProbabilityOfByzantineNodesWins() }} <br>
+
+                The probability of honest nodes lose: {{ honestNodesLoose() }} <br>
+
+
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <div class="col-sm">
+                <button ng-click="openSimulationTab()" type="button" class="btn btn-primary btn-lg btn-block">Run Simulation</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+
+<script>
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.setOnLoadCallback(function(){
+        angular.element(document.getElementById('page_body')).scope().drawChartExpextedNumberOfCorrerctLeaders();
+    });
+</script>
+
+<script src="app.js"></script>
+
+</html>

@@ -1,4 +1,0 @@
-theme: jekyll-theme-minimal
-title: kadir korkmaz
-logo: {{ site.url }}/assets/img/logo.jpg
-description: my personal page
