@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gossip Dissemintaion</title>
+
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/custom-slider.css">
+
+	<!-- D3 Related -->
+	<script src="https://d3js.org/d3.v4.js"></script>
+
+	<!-- Other Libs -->
+	<script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="./js/angular.min.js"></script>
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/seedrandom.js"></script>
+
+</head>
+<body ng-app="gossipDissemination" ng-controller="mainController">
+
+<div class="container">
+  <div class="row" align="center">
+    <div class="col" style="margin-top: 30px;">
+      
+    	<svg width="960" height="700" viewBox="-480 -350 960 700">
+    	<!--
+		  <circle r="50" stroke="brown" stroke-opacity="0.5" fill="none"></circle>
+		  <circle r="100" stroke="brown" stroke-opacity="0.5" fill="none"></circle>
+		  <circle r="150" stroke="brown" stroke-opacity="0.5" fill="none"></circle>
+		  <circle r="200" stroke="brown" stroke-opacity="0.5" fill="none"></circle>
+		-->
+		</svg>
+
+    </div>
+  </div>
+  <div class="row">
+  	<div class="col-3"> <input type="range" min="3" max="50" ng-model="degree" ng-change="updateDegree()" class="slider" id="myRange" style="margin: 20px;"> </div>
+
+  	<div class="col-6">
+  		<input type="range" min="00" max="{{getNumberOfNodes()}}" ng-model="centerNode" ng-change="updateNetwork()" class="slider" id="myRange" style="margin: 20px;">
+  	</div>
+
+    <div class="col-3" align="center">
+    	<button ng-click="showMessageModal()" ng-hide="simulationMode !== enum.initial" type="button" class="btn btn-primary btn-block btn-sm" style="margin-top: 10px;">Send Message</button>
+    	<button ng-click="moveNext()" ng-hide="simulationMode !== enum.sending" type="button" class="btn btn-danger btn-block btn-sm" style="margin-top: 10px;"> Forward </button>
+    	<button ng-click="reset()" ng-hide="simulationMode !== enum.reset" type="button" class="btn btn-secondary btn-block btn-sm" style="margin-top: 10px;"> Reset </button>
+    </div>
+  </div>
+
+    <div class="row">
+  	
+    <div class="col-3" align="center"> <h4>{{degree}}</h4> </div>
+  	<div class="col-6" align="center"> <h4>{{centerNode}}</h4></div>
+    <div class="col-3" align="center"></div>
+
+    </div>
+
+
+</div>
+
+
+<!-- Custom -->
+<script type="text/javascript" src="./js/network.js"></script>
+<script type="text/javascript" src="./js/app.js"></script>
+
+
+
+<div class="modal fade" id="messageScheduleModal" tabindex="-1" role="dialog" aria-labelledby="messageScheduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Schedule Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <table class="table">
+
+          <thead>
+            <tr>
+              <th scope="col">Send From</th>
+              <th scope="col">Message Content</th>
+              <th scope="col">Color</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat=" scheduledMessage in scheduledMessages">
+              <td>{{scheduledMessage.nodeId}}</td>
+              <td>{{scheduledMessage.message}}</td>
+              <td><input type="color" ng-model="scheduledMessage.color"></td>
+              <td><button type="button" class="btn btn-link" ng-click="deleteMessage(scheduledMessage)">Link</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      
+      	 <form class="form-inline">
+		      <div class=" form-group  row">
+		      	<div class="col-xs"><input type="number"  placeholder="Node ID" ng-model="newScheduledMessage.nodeId"></div>
+		      	<div class="col-xs"><input type="text"    placeholder="message" ng-model="newScheduledMessage.message"></div>
+		      	<div class="col-xs"><button type="button" class="btn btn-outline-secondary btn-sm" ng-disabled="!(newScheduledMessage.nodeId && newScheduledMessage.message)" ng-click="addNewMessage()">Add</button></div>
+		      </div>
+ 		</form>
+      
+
+      </div>
+
+      <div class="modal-footer">
+        <button ng-click="sendMessages()" type="button" class="btn btn-primary" ng-disabled="scheduledMessages.length === 0">Send Messages</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>
