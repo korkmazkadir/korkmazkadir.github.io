@@ -4,7 +4,7 @@ const unitCost = 1.6;
 const fanOut = 6;
 const enableFanouts = false;
 
-//alert("Press right-arrow key to increment the round!"); 
+alert("You can use the right arrow key for the next round. The lable of the node shows the round of the block delivery for that node."); 
 
 var nodes = [];
 var root = null;
